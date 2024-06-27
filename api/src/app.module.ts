@@ -5,10 +5,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/entities/product.entity';
+import { DataInitializationService } from './products/data-initialization.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env' }),
+    ProductsModule,
+    ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -19,9 +21,8 @@ import { Product } from './products/entities/product.entity';
       }),
       inject: [ConfigService],
     }),
-    ProductsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [ AppController],
+  providers: [ AppService, DataInitializationService],
 })
 export class AppModule {}

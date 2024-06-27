@@ -12,6 +12,10 @@ export class ProductsService {
     private productRepository: Repository<Product>,
   ) {}
 
+  async count(): Promise<number> {
+    return this.productRepository.count();
+  }
+
   create(createProductDto: CreateProductDto) {
     const product = this.productRepository.create(createProductDto);
     return this.productRepository.save(product);
@@ -22,14 +26,14 @@ export class ProductsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} produc`;
+    return `This action returns a #${id} product`;
   }
 
   update(id: number, updateProducDto: UpdateProductDto) {
-    return `This action updates a #${id} produc`;
+    return `This action updates a #${id} product`;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} produc`;
+    return `This action removes a #${id} product`;
   }
 }
