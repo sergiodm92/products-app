@@ -13,7 +13,7 @@ export class DataInitializationService {
         await this.productService.create(product);
       }
 
-      console.log('Productos por defecto insertados correctamente.');
+      console.log('Default products created successfully');
     }
   }
 }
