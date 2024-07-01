@@ -28,7 +28,7 @@ export class CategoriesService {
 
   async create(category: CreateCategoryDto): Promise<Category> {
     const existingCategory = await this.categoryRepository.findOne({
-      where: { name: category.name.toLocaleLowerCase() },
+      where: { name: category.name.toLowerCase() },
     });
 
     if (existingCategory) {

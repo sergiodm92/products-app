@@ -22,16 +22,29 @@ export const NewProductModal = ({
 
   const onSubmit: SubmitHandler<ProductFormInput> = async (data) => {
     try {
-      console.log(data);
       const response = await createProductService(data);
-      console.log(response);
-      setProducts([...products, response]);
-      onClose();
-    } catch (error) {
-      console.error(error);
-    }
-    onClose();
+      setProducts([...products, response.data]);
+      if(response.status === 201) {
+        alert("Product created successfully");
+        onClose();
+      }
+   
+    } catch (error: any) {
+      if (error.response) {
+        const statusCode = error.response.status;
+        if (statusCode === 409) {
+          alert("Product name already exists");
+        } else {
+          alert(`Error creating product: ${statusCode}`);
+        }
+      } else if (error.request) {
+        alert("No response received from the server");
+      } else {
+        alert("Error creating product");
+      }
+  
   };
+}
 
   if (!isOpen) return null;
 

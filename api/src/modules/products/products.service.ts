@@ -38,8 +38,8 @@ export class ProductsService {
       throw new BadRequestException(` '${category}' is not a valid category`);
     }
     // check if product with same name already exists
-    const existingProduct = await this.categoryRepository.findOne({
-      where: { name: newProduct.name.toLocaleLowerCase() },
+    const existingProduct = await this.productRepository.findOne({
+      where: { name: newProduct.name.toLowerCase() },
     });
 
     if (existingProduct) {

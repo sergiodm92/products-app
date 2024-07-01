@@ -23,9 +23,29 @@ export const NewCategoryModal = ({
   });
 
   const onSubmit: SubmitHandler<CategoryFormInput> = async (data) => {
-    const response = await createCategoryService(data);
-    setCategories([...categories, response]);
-    onClose();
+    try {
+      const response = await createCategoryService(data);
+      setCategories([...categories, response.data]);
+
+      if (response.status === 201) {
+        alert("Category created successfully");
+        onClose();
+      }
+    } catch (error:any) {
+      if (error.response) {
+        const statusCode = error.response.status;
+        if (statusCode === 409) {
+          alert("Category name already exists");
+        } else {
+          alert(`Error creating category: ${statusCode}`);
+        }
+      } else if (error.request) {
+        alert("No response received from the server");
+      } else {
+        alert("Error creating category");
+      }
+  
+    }
   };
 
   if (!isOpen) return null;
