@@ -2,8 +2,8 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { toastDelete } from "./ToastDelete";
-import { ModalProps } from "@/interfaces/products.interfaces";
-import { useProductsStore } from "@/store/useProductsStore";
+import { ModalProps } from "@interfaces/products.interfaces";
+import { useProductsStore } from "@store/useProductsStore";
 
 export const DetailModal = ({ product, isOpen, onClose }: ModalProps) => {
   const products = useProductsStore((state) => state.products);
@@ -19,9 +19,9 @@ export const DetailModal = ({ product, isOpen, onClose }: ModalProps) => {
 
   const handleDeleteProduct = async () => {
     try {
-      toastDelete({ product, onClose, products, setProducts }); // Llama a la función toastDelete para mostrar el modal de confirmación
+      toastDelete({ product, onClose, products, setProducts }); 
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       toast.error("Something went wrong");
     }
   };

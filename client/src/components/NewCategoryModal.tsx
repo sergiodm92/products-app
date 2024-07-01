@@ -21,14 +21,13 @@ export const NewCategoryModal = ({
   } = useForm<CategoryFormInput>({
     resolver: yupResolver(createCategoryValidationSchema),
   });
-  const setCategories = useCategoriesStore((state) => state.setCategories);
-  const categories = useCategoriesStore((state) => state.categories);
+  const addCategory = useCategoriesStore((state) => state.addCategory);
 
   const onSubmit: SubmitHandler<CategoryFormInput> = async (data) => {
     try {
       const response = await createCategoryService(data);
       if (response.status !== 201) return;
-      setCategories([...categories, response.data]);
+      addCategory(response.data);
       toast.success("Category created successfully");
       onClose();
     } catch (error: any) {

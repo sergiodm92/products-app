@@ -1,4 +1,4 @@
-import { ToastDeleteProps } from "@interfaces/toast.interfaces";
+import { ToastDeleteProps } from "@/interfaces/toast.interfaces";
 import { deleteProductService } from "@services/products.services";
 import toast from "react-hot-toast";
 

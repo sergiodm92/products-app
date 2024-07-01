@@ -1,4 +1,4 @@
-import { Product } from "./table.interfaces";
+import { Product } from "./products.interfaces";
 
 export interface ToastDeleteProps {
   product: Product;

@@ -49,7 +49,7 @@ export interface ProductFormInput {
 }
 
 export interface ModalProps {
-  product: CreateProductDto;
+  product: Product;
   isOpen: boolean;
   onClose: () => void;
 }

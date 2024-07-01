@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createProductService } from "@services/products.services";
 import {
@@ -9,23 +9,14 @@ import {
 import { createProductValidationSchema } from "@validations/products.validations";
 import toast from "react-hot-toast";
 import { useProductsStore } from "@store/useProductsStore";
-import { useCategoriesStore } from "@/store/useCategoriesStore";
-import { getcategoriesService } from "@/services/categories.services";
+import { useCategoriesStore } from "@store/useCategoriesStore";
+import { getcategoriesService } from "@services/categories.services";
 
 export const NewProductModal = ({ isOpen, onClose }: ModalNewProductProps) => {
-  const setCategories = useCategoriesStore((state) => state.setCategories);
-  const setProducts = useProductsStore((state) => state.setProducts);
-  const products = useProductsStore((state) => state.products);
   const categories = useCategoriesStore((state) => state.categories);
   const [loading, setLoading] = useState(true);
-
-  const {
-    register: newProduct,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ProductFormInput>({
-    resolver: yupResolver(createProductValidationSchema),
-  });
+  const setCategories = useCategoriesStore((state) => state.setCategories);
+  const addProduct = useProductsStore((state) => state.addProduct);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -41,28 +32,27 @@ export const NewProductModal = ({ isOpen, onClose }: ModalNewProductProps) => {
     fetchCategories();
   }, []);
 
+  const {
+    register: newProduct,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductFormInput>({
+    resolver: yupResolver(createProductValidationSchema),
+  });
+
   const onSubmit: SubmitHandler<ProductFormInput> = async (data) => {
     try {
       const response = await createProductService(data);
       if (response.status === 201) {
-        const allProducts = [...products, response.data];
-        setProducts(allProducts);
+        const newProduct = response.data;
+        addProduct(newProduct);
         toast.success("Product created successfully");
-        onClose();
+        onClose(); // Cierra el modal después de crear el producto
+      } else {
+        toast.error("Failed to create product");
       }
     } catch (error: any) {
-      if (error.response) {
-        const statusCode = error.response.status;
-        if (statusCode === 409) {
-          toast.error("Product name already exists");
-        } else {
-          toast.error(`Error creating product: ${statusCode}`);
-        }
-      } else if (error.request) {
-        toast.error("No response received from the server");
-      } else {
-        toast.error("Error creating product");
-      }
+      toast.error("Failed to create product");
     }
   };
 

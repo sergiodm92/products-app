@@ -1,11 +1,6 @@
+import { ProductsState } from "@interfaces/stores.interfaces";
 import { Product } from "@interfaces/products.interfaces";
 import { create } from "zustand";
-
-interface ProductsState {
-  products: Product[];
-  removeProduct: (id: string) => void;
-  setProducts: (products: Product[]) => void;
-}
 
 export const useProductsStore = create<ProductsState>((set) => ({
   products: [],
@@ -14,6 +9,12 @@ export const useProductsStore = create<ProductsState>((set) => ({
     set({
       products,
     });
+  },
+
+  addProduct: (product: Product) => {
+    set((state) => ({
+      products: [...state.products, product],
+    }));
   },
 
   removeProduct: (id: string) => {
