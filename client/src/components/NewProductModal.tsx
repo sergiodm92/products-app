@@ -49,35 +49,35 @@ export const NewProductModal = ({
           Add New Product
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col text-left">
             <label className="text-white">Name</label>
             <input
               type="text"
               {...newProduct("name")}
-              className="border border-white p-2 rounded bg-primaryLight text-primaryDark"
+              className="border border-white p-2 rounded text-primaryDark"
             />
             {errors.name && (
               <p className="text-danger text-sm">{errors.name.message}</p>
             )}
           </div>
 
-          <div className="flex flex-col">
-            <label className="text-white">Price</label>
+          <div className="flex flex-col text-left">
+            <label className="text-white ">Price</label>
             <input
               type="text"
               {...newProduct("price")}
-              className="border border-white p-2 rounded bg-primaryLight text-primaryDark"
+              className="border border-white p-2 rounded text-primaryDark"
             />
             {errors.price && (
               <p className="text-danger text-sm">{errors.price.message}</p>
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col text-left">
             <label className="text-white">Description</label>
             <textarea
               {...newProduct("description")}
-              className="border border-white p-2 rounded bg-primaryLight text-primaryDark"
+              className="border border-white p-2 rounded text-primaryDark"
             />
             {errors.description && (
               <p className="text-danger text-sm">
@@ -86,11 +86,11 @@ export const NewProductModal = ({
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col text-left">
             <label className="text-white">Category</label>
             <select
               {...newProduct("category")}
-              className="border border-white p-2 rounded bg-primaryLight text-primaryDark"
+              className="border border-white p-2 rounded text-primaryDark"
             >
               <option value="">Select a category</option>
               {categories.map((category) => (
@@ -104,23 +104,23 @@ export const NewProductModal = ({
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col text-left">
             <label className="text-white">Image URL</label>
             <input
               type="text"
               {...newProduct("image")}
-              className="border border-white p-2 rounded bg-primaryLight text-primaryDark"
+              className="border border-white p-2 rounded text-primaryDark"
             />
             {errors.image && (
               <p className="text-danger text-sm">{errors.image.message}</p>
             )}
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col text-left">
             <label className="text-white">Stock</label>
             <input
               type="text"
               {...newProduct("stock")}
-              className="border border-white p-2 rounded bg-primaryLight text-primaryDark"
+              className="border border-white p-2 rounded text-primaryDark"
             />
             {errors.stock && (
               <p className="text-danger text-sm">{errors.stock.message}</p>
@@ -130,7 +130,7 @@ export const NewProductModal = ({
           <div className="text-center">
             <button
               type="submit"
-              className="px-5 py-2 bg-primaryLight text-black rounded"
+              className="px-5 py-2 rounded bg-primary text-white hover:bg-primary/50"
             >
               Add Product
             </button>

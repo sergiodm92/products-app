@@ -41,23 +41,23 @@ export const NewCategoryModal = ({
           Add New Category
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col text-left">
             <label className="text-white">Name</label>
             <input
               type="text"
               {...newCategory("name")}
-              className="border border-white p-2 rounded bg-primaryLight text-primaryDark"
+              className="border border-white p-2 rounded text-primaryDark"
             />
             {errors.name && (
               <p className="text-red-500">{errors.name.message}</p>
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col text-left">
             <label className="text-white">Description</label>
             <textarea
               {...newCategory("description")}
-              className="border border-white p-2 rounded bg-primaryLight text-primaryDark"
+              className="border border-white p-2 rounded text-primaryDark"
             />
             {errors.description && (
               <p className="text-red-500">{errors.description.message}</p>
@@ -67,7 +67,7 @@ export const NewCategoryModal = ({
           <div className="text-center">
             <button
               type="submit"
-              className="px-5 py-2 bg-primaryLight text-black rounded"
+              className="px-5 py-2 bg-primary rounded text-white hover:bg-primary/50"
             >
               Add Category
             </button>
