@@ -1,11 +1,9 @@
-import { ProductCategory } from "@enums/product-category.enum";
-
 export interface CreateProductDto {
   _id: string;
   name: string;
   price: number;
   description?: string;
-  category: ProductCategory;
+  category: string;
   image?: string;
   ratings?: number[];
   stock: number;
@@ -35,7 +33,6 @@ export interface Category {
   description: string;
   _id: string;
 }
-
 
 export interface ProductFormInput {
   name: string;

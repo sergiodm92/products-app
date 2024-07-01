@@ -1,5 +1,9 @@
+"use client";
 import { CreateProductDto } from "@/interfaces/products.intefaces";
-import React from "react";
+import { deleteProductService } from "@/services/products.services";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { toastDelete } from "./ToastDelete";
 
 interface ModalProps {
   data: CreateProductDto;
@@ -17,8 +21,20 @@ export const DetailModal = ({ data, isOpen, onClose }: ModalProps) => {
 
   if (!isOpen) return null;
 
+  const handleDeleteProduct = async () => {
+    try {
+      toastDelete({ data, onClose });
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        toast.error("Product not found");
+      }
+      toast.error("Something went wrong");
+    }
+    onClose();
+  };
+
   return (
-    <div
+    <section
       id="modal"
       className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center z-50"
       onClick={handleOnClose}
@@ -33,7 +49,11 @@ export const DetailModal = ({ data, isOpen, onClose }: ModalProps) => {
         </h1>
         <div className="w-full p-2 bg-white rounded-lg flex flex-col justify-center items-center m-4">
           <img
-            src={data.image? data.image : "https://focaris.com.ar/wp-content/plugins/ecommerce-product-catalog/img/no-default-thumbnail.png"}
+            src={
+              data.image
+                ? data.image
+                : "https://focaris.com.ar/wp-content/plugins/ecommerce-product-catalog/img/no-default-thumbnail.png"
+            }
             className="rounded-lg max-h-[100px] max-w-[100px]"
             alt="Product Image"
           />
@@ -53,7 +73,13 @@ export const DetailModal = ({ data, isOpen, onClose }: ModalProps) => {
             {data.stock}
           </p>
         </div>
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+          onClick={handleDeleteProduct}
+        >
+          Delete Product
+        </button>
       </div>
-    </div>
+    </section>
   );
-}
+};

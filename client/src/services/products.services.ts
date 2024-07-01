@@ -18,3 +18,12 @@ export const createProductService = async (product: any) => {
   }
 };
 
+export const deleteProductService = async (id: string) => {
+  try {
+    const response = await axiosInstance.delete(`/products/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
