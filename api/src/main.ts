@@ -3,8 +3,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { DataInitializationService } from './products/data-initialization.service';
-import { corsOptions } from './constants';
+import { corsOptions } from './constants/cors';
+import { CategoriesService } from './modules/categories/categories.service';
+import { ProductsService } from './modules/products/products.service';
 
 async function bootstrap() {
   // Create a NestJS application instance
@@ -16,11 +17,11 @@ async function bootstrap() {
   // Apply global validation pipe to enforce DTO validation
   app.useGlobalPipes(new ValidationPipe());
 
- // Enable CORS
- app.enableCors(corsOptions);
+  // Enable CORS
+  app.enableCors(corsOptions);
 
- // Disable 'X-Powered-By' header
- app.getHttpAdapter().getInstance().disable('x-powered-by');
+  // Disable 'X-Powered-By' header
+  app.getHttpAdapter().getInstance().disable('x-powered-by');
 
   // Swagger API documentation configuration
   const config = new DocumentBuilder()
@@ -35,9 +36,13 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT');
 
-  // Initialize DataInitializationService to handle data seeding
-  const dataInitializationService = app.get(DataInitializationService);
-  await dataInitializationService.initializeDefaultProducts();
+  // Add Categories to the database
+  const CategoriesServiceInstance = app.get(CategoriesService);
+  await CategoriesServiceInstance.initializeDefaultCategories();
+
+  // Add Products to the database
+  const productsServiceInstance = app.get(ProductsService);
+  await productsServiceInstance.initializeDefaultProducts();
 
   // Default port fallback if PORT environment variable is not set
   const defaultPort = 8000;

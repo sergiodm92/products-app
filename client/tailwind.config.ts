@@ -1,35 +1,39 @@
 import type { Config } from "tailwindcss";
 
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+
+const config = {
+  darkMode: ["class"],
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{ts,tsx,md,mdx}",
+    "./components/**/*.{ts,tsx,md,mdx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
+  prefix: "",
   theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+    container: {
+      center: true,
+      padding: "1.5rem",
+      screens: {
+        "2xl": "1400px",
       },
+    },
+    extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        darkBlue: "hsl(var(--dark-blue))",
-        primary: "#D247BF",
-        danger: "#F596D3",
-        primaryLight: "#F596D3",
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
+        primary: "#6b8bc6",
+        primaryLight: "#cfdcee",
+        primaryDark: "#272c44",
+        secondary: "#6b69a7",
+        secondaryLight: "#959ac5",
+        secondaryDark: "#2e2c3f",
+        danger: "#d42e2e",
+        success: "#2fb845",
+        bgDark: "#3b3b3e",
+        bgLight: "#cfd0d2",
       },
     },
   },
-  plugins: [],
-};
+} satisfies Config;
+
 export default config;

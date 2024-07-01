@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+
+
+/* Close button */
+.close {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.close::before,
+.close::after {
+  content: '';
+  background-color: white;
+  width: 1rem; /* Ajusta el ancho de la línea */
+  height: 2px; /* Ajusta el grosor de la línea */
+  position: absolute;
+  top: 50%;
+  left: 0.45rem;
+  transition: transform 0.3s ease; /* Agrega una transición suave */
+}
+
+.close::before {
+  transform: translate(0, -50%) rotate(0deg); /* Inicialmente horizontal */
+}
+
+.close::after {
+  transform: translate(0, -50%) rotate(0deg); /* Inicialmente horizontal */
+}
+
+.close:hover::before {
+  transform: translate(0, -50%) rotate(-45deg); /* Al hacer hover, giran */
+}
+
+.close:hover::after {
+  transform: translate(0, -50%) rotate(45deg); /* Al hacer hover, giran */
+}

@@ -1,7 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Product } from '../products/entities/product.entity'; 
+import { Product } from '@modules/products/entities/product.entity';
+import { Category } from '@modules/categories/entities/category.entity';
 
 @Global()
 @Module({
@@ -11,8 +12,8 @@ import { Product } from '../products/entities/product.entity';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         type: 'mongodb',
-        url: configService.get<string>('MONGODB_URI'),
-        entities: [Product], 
+        url: configService.get<string>('MONGODB'),
+        entities: [Product, Category], 
       }),
     }),
   ],

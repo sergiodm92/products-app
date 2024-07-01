@@ -3,9 +3,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsEnum,
 } from 'class-validator';
-import { ProductCategory } from '../enums/product-category.enum';
 
 export class CreateProductDto {
   @IsString()
@@ -20,7 +18,7 @@ export class CreateProductDto {
   @IsOptional()
   readonly description?: string;
 
-  @IsEnum(ProductCategory)
+  @IsString()
   @IsNotEmpty()
   readonly category: string;
 

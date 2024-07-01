@@ -18,7 +18,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
+      "@/*": ["./src/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@layouts/*": ["./src/layouts/*"],
       "@components/*": ["./src/components/*"],
       "@interfaces/*": ["./src/interfaces/*"],
       "@enums/*": ["./src/enums/*"],

@@ -1,35 +1,57 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import { ProductCategory } from './enums/product-category.enum';
 import { ObjectId } from 'mongodb';
+import { Category } from '../categories/entities/category.entity';
+import { defaultProducts } from './data/products.data';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
   ) {}
 
   async count(): Promise<number> {
     return this.productRepository.count();
   }
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
-    const { name, description, price, category, image, ratings, stock } =
-      createProductDto;
+  async create(newProduct: CreateProductDto): Promise<Product> {
+    const { category, ...productData } = newProduct;
 
-    const product = new Product();
-    product.name = name;
-    product.description = description;
-    product.price = price;
-    product.category = category as ProductCategory;
-    product.image = image;
-    product.ratings = ratings;
-    product.stock = stock;
+    // check if category exists
+    const categoryExists = await this.categoryRepository.findOne({
+      where: { name: category },
+    });
+
+    if (!categoryExists) {
+      throw new BadRequestException(` '${category}' is not a valid category`);
+    }
+    // check if product with same name already exists
+    const existingProduct = await this.categoryRepository.findOne({
+      where: { name: newProduct.name.toLocaleLowerCase() },
+    });
+
+    if (existingProduct) {
+      throw new ConflictException(
+        `There is already a product with the name '${newProduct.name}'`,
+      );
+    }
+
+    const product = this.productRepository.create({
+      ...productData,
+      category: categoryExists.name,
+    });
 
     return this.productRepository.save(product);
   }
@@ -62,12 +84,22 @@ export class ProductsService {
     const { name, description, price, category, image, ratings, stock } =
       updateProductDto;
 
+    // check if category exists
+    if (category !== undefined) {
+      const categoryExists = await this.categoryRepository.findOne({
+        where: { name: category },
+      });
+
+      if (!categoryExists) {
+        throw new BadRequestException(` '${category}' is not a valid category`);
+      }
+      product.category = categoryExists.name;
+    }
+
     product.name = name !== undefined ? name : product.name;
     product.description =
       description !== undefined ? description : product.description;
     product.price = price !== undefined ? price : product.price;
-    product.category =
-      category !== undefined ? (category as ProductCategory) : product.category;
     product.image = image !== undefined ? image : product.image;
     product.ratings = ratings !== undefined ? ratings : product.ratings;
     product.stock = stock !== undefined ? stock : product.stock;
@@ -78,5 +110,17 @@ export class ProductsService {
   async remove(id: string): Promise<void> {
     const product = await this.findOne(id);
     await this.productRepository.remove(product);
+  }
+
+  // charge database with default products
+  async initializeDefaultProducts() {
+    const count = await this.count();
+    if (count === 0) {
+      for (const product of defaultProducts) {
+        await this.create(product);
+      }
+
+      console.log('Default products created successfully');
+    }
   }
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from "@/config";
+import config from "../../config";
 
 const axiosInstance = axios.create({
   baseURL: config.apiUrl, // Usa una variable de entorno para la URL base

@@ -1,10 +1,9 @@
-import HomeContainer from "@features/home/container";
-import Image from "next/image";
+import SectionProducts from "@/components/SectionProducs";
 
 export default function Home() {
   return (
     <>
-     <HomeContainer />
+      <SectionProducts />
     </>
   );
 }

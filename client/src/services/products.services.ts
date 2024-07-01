@@ -1,12 +1,11 @@
 import axiosInstance from "@lib/axiosInstance";
 
-export const getProducts = async () => {
+export const getProductsService = async () => {
   try {
     const response = await axiosInstance.get("/products");
     return response.data;
   } catch (error) {
-    console.error(error);
-    return error;
+    throw error
   }
 };
 
@@ -20,13 +19,12 @@ export const getProductById = async (id: string) => {
   }
 };
 
-export const createProduct = async (product: any) => {
+export const createProductService = async (product: any) => {
   try {
     const response = await axiosInstance.post("/products", product);
     return response.data;
   } catch (error) {
-    console.error(error);
-    return error;
+    throw error;
   }
 };
 

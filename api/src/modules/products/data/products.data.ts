@@ -8,7 +8,7 @@ export const defaultProducts: CreateProductDto[] = [
       'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
     category: "men's clothing",
     image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-    ratings: [2.5, 5, 2, 4, 3],
+    ratings: [2.5, 5, 1, 1, 3],
     stock: 35,
   },
   {
@@ -39,7 +39,7 @@ export const defaultProducts: CreateProductDto[] = [
       'The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.',
     category: "men's clothing",
     image: 'https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg',
-    ratings: [3, 5, 2, 4, 3],
+    ratings: [3, 5, 1, 1, 1],
     stock: 25,
   },
   {
@@ -59,7 +59,7 @@ export const defaultProducts: CreateProductDto[] = [
       'Satisfaction Guaranteed. Return or exchange any order within 30 days.Designed and sold by Hafeez Center in the United States. Satisfaction Guaranteed. Return or exchange any order within 30 days.',
     category: 'jewelery',
     image: 'https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg',
-    ratings: [3, 5, 2, 4, 3],
+    ratings: [3, 5, 0, 0, 1],
     stock: 20,
   },
   {
@@ -159,7 +159,7 @@ export const defaultProducts: CreateProductDto[] = [
       '100% POLYURETHANE(shell) 100% POLYESTER(lining) 75% POLYESTER 25% COTTON (SWEATER), Faux leather material for style and comfort / 2 pockets of front, 2-For-One Hooded denim style faux leather jacket, Button detail on waist / Detail stitching at AND WASH ONLY / DO NOT BLEACH / LINE DRY / DO NOT IRON',
     category: "women's clothing",
     image: 'https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg',
-    ratings: [3, 5, 2, 4, 3],
+    ratings: [3, 5, 0, 0, 1],
     stock: 35,
   },
   {

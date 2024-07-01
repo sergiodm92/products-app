@@ -1,5 +1,4 @@
 import { Entity, Column, ObjectIdColumn, ObjectId, BeforeInsert, BeforeUpdate } from 'typeorm';
-import { ProductCategory } from '../enums/product-category.enum';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -15,11 +14,8 @@ export class Product {
   @Column('decimal')
   price: number;
 
-  @Column({
-    type: 'enum',
-    enum: ProductCategory,
-  })
-  category: ProductCategory;
+  @Column()
+  category: string;
 
   @Column()
   image: string;
