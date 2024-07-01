@@ -152,7 +152,9 @@ const Home = () => {
         </div>
       ) : filteredProducts.length > 0 ? (
         <>
-          <Table data={currentPageData} columns={columns} />
+          <Table data={currentPageData} columns={columns} 
+          products={products} setProducts={setProducts}
+          />
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}

@@ -1,3 +1,5 @@
+import { CreateProductDto } from "./products.intefaces";
+
 interface Column {
   key: string;
   name: string;
@@ -7,4 +9,6 @@ interface Column {
 export interface TableProps {
   data: any[];
   columns: Column[];
+  products: CreateProductDto[];
+  setProducts: React.Dispatch<React.SetStateAction<CreateProductDto[]>>;
 }

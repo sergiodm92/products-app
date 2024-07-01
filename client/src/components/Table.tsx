@@ -4,7 +4,12 @@ import { TableProps } from "@/interfaces/table.interfaces";
 import React, { useState } from "react";
 import { DetailModal } from "@components/index";
 
-export const Table: React.FC<TableProps> = ({ data, columns }) => {
+export const Table: React.FC<TableProps> = ({
+  data,
+  columns,
+  products,
+  setProducts,
+}) => {
   const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -104,7 +109,9 @@ export const Table: React.FC<TableProps> = ({ data, columns }) => {
             </div>
             {selectedProduct && (
               <DetailModal
-                data={selectedProduct}
+                product={selectedProduct}
+                products={products}
+                setProducts={setProducts}
                 isOpen={isOpenDetail}
                 onClose={() => setIsOpenDetail(false)}
               />

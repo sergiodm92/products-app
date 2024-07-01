@@ -2,9 +2,18 @@ import { ToastDeleteProps } from "@/interfaces/toast.interfaces";
 import { deleteProductService } from "@/services/products.services";
 import toast from "react-hot-toast";
 
-export const toastDelete = ({ data, onClose }: ToastDeleteProps) => {
+export const toastDelete = ({
+  product,
+  onClose,
+  products,
+  setProducts,
+}: ToastDeleteProps) => {
   const handleToastConfirm = async (t: any) => {
-    const response = await deleteProductService(data._id);
+    const newsProducts = products.filter(
+      (p) => p._id !== product._id
+    );
+    setProducts(newsProducts);
+    const response = await deleteProductService(product._id);
     if (response.status === 200) {
       toast.success("Product deleted successfully");
       onClose();
