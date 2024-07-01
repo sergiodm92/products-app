@@ -1,14 +1,19 @@
-import { CreateProductDto } from "./products.intefaces";
-
-interface Column {
+export interface Column {
   key: string;
   name: string;
-  render?: (value: any) => JSX.Element;
+}
+
+export interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  category: string;
+  image: string;
+  ratings: number[];
+  stock: number;
 }
 
 export interface TableProps {
-  data: any[];
+  data: Product[] | any[];
   columns: Column[];
-  products: CreateProductDto[];
-  setProducts: React.Dispatch<React.SetStateAction<CreateProductDto[]>>;
 }

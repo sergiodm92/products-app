@@ -27,9 +27,11 @@
       "@config/*": ["./src/config/*"],
       "@services/*": ["./src/services/*"],
       "@features/*": ["./src/features/*"],
-      "@lib/*":["./src/lib//*"]
+      "@lib/*":["./src/lib//*"],
+      "@store/*": ["./src/store/*"],
+      "@validations/*": ["./src/validations/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/interfaces/products.intefaces.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/interfaces/products.interfaces.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,17 +1,17 @@
-"use client";
 import { BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
-import { TableProps } from "@/interfaces/table.interfaces";
 import React, { useState } from "react";
 import { DetailModal } from "@components/index";
+import { TableProps } from "@interfaces/table.interfaces";
+import { Product } from "@interfaces/products.interfaces";
+
+const defaultProductImage = "https://focaris.com.ar/wp-content/plugins/ecommerce-product-catalog/img/no-default-thumbnail.png";
 
 export const Table: React.FC<TableProps> = ({
   data,
   columns,
-  products,
-  setProducts,
 }) => {
   const [isOpenDetail, setIsOpenDetail] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const calculateAverage = (arr: number[]): number => {
     if (!Array.isArray(arr) || arr.length === 0) return 0;
@@ -39,7 +39,7 @@ export const Table: React.FC<TableProps> = ({
     return stars;
   };
 
-  const handleRowClick = (product: any) => {
+  const handleRowClick = (product: Product) => {
     setSelectedProduct(product);
     setIsOpenDetail(true);
   };
@@ -70,29 +70,23 @@ export const Table: React.FC<TableProps> = ({
                       className={`${
                         rowIndex % 2 === 0 ? "bg-primaryLight" : "bg-primary"
                       } hover:opacity-80 transition-all duration-300 cursor-pointer`}
-                      onClick={() => handleRowClick(row)}
+                      onClick={() => handleRowClick(row as Product)}
                     >
                       {columns.map((column) => (
                         <td
                           key={column.key}
                           className={`text-dark border-b border-l text-sm border-[#E8E8E8] text-center px-2 py-5 dark:text-dark-7 ${
-                            rowIndex % 2 === 0
-                              ? "bg-primaryLight"
-                              : "bg-primary"
+                            rowIndex % 2 === 0 ? "bg-primaryLight" : "bg-primary"
                           }`}
                         >
                           {column.key === "ratings" ? (
                             <div className="flex justify-center">
-                              {renderStars(calculateAverage(row[column.key]))}
+                              {renderStars(calculateAverage(row[column.key] as number[]))}
                             </div>
                           ) : column.key === "image" ? (
                             <div className="flex items-center justify-center p-2 bg-white rounded-lg">
                               <img
-                                src={
-                                  row[column.key]
-                                    ? row[column.key]
-                                    : "https://focaris.com.ar/wp-content/plugins/ecommerce-product-catalog/img/no-default-thumbnail.png"
-                                }
+                                src={row[column.key] || defaultProductImage}
                                 className="rounded-lg max-h-[100px] max-w-[100px]"
                                 alt="Product Image"
                               />
@@ -110,8 +104,6 @@ export const Table: React.FC<TableProps> = ({
             {selectedProduct && (
               <DetailModal
                 product={selectedProduct}
-                products={products}
-                setProducts={setProducts}
                 isOpen={isOpenDetail}
                 onClose={() => setIsOpenDetail(false)}
               />

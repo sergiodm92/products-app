@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createProductService } from "@/services/products.services";
-import { ModalNewProductProps, ProductFormInput } from "@/interfaces/products.intefaces";
-import { createProductValidationSchema } from "@/validations/products.validations";
+import { createProductService } from "@services/products.services";
+import {
+  ModalNewProductProps,
+  ProductFormInput,
+} from "@interfaces/products.interfaces";
+import { createProductValidationSchema } from "@validations/products.validations";
 import toast from "react-hot-toast";
+import { useProductsStore } from "@store/useProductsStore";
+import { useCategoriesStore } from "@/store/useCategoriesStore";
+import { getcategoriesService } from "@/services/categories.services";
 
-export const NewProductModal = ({
-  isOpen,
-  onClose,
-  categories,
-  setProducts,
-  products,
-}: ModalNewProductProps) => {
+export const NewProductModal = ({ isOpen, onClose }: ModalNewProductProps) => {
+  const setCategories = useCategoriesStore((state) => state.setCategories);
+  const setProducts = useProductsStore((state) => state.setProducts);
+  const products = useProductsStore((state) => state.products);
+  const categories = useCategoriesStore((state) => state.categories);
+  const [loading, setLoading] = useState(true);
+
   const {
     register: newProduct,
     handleSubmit,
@@ -21,15 +27,29 @@ export const NewProductModal = ({
     resolver: yupResolver(createProductValidationSchema),
   });
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getcategoriesService();
+        setCategories(response);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   const onSubmit: SubmitHandler<ProductFormInput> = async (data) => {
     try {
       const response = await createProductService(data);
-      setProducts([...products, response.data]);
-      if(response.status === 201) {
+      if (response.status === 201) {
+        const allProducts = [...products, response.data];
+        setProducts(allProducts);
         toast.success("Product created successfully");
         onClose();
       }
-   
     } catch (error: any) {
       if (error.response) {
         const statusCode = error.response.status;
@@ -43,15 +63,13 @@ export const NewProductModal = ({
       } else {
         toast.error("Error creating product");
       }
+    }
   };
-}
 
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center z-50"
-    >
+    <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="relative bg-secondaryDark p-4 rounded-xl w-96 text-white">
         <button
           onClick={onClose}
@@ -105,8 +123,12 @@ export const NewProductModal = ({
               {...newProduct("category")}
               className="border border-white p-2 rounded text-primaryDark"
             >
-              <option value="">Select a category</option>
-              {categories.map((category) => (
+              {loading ? (
+                <option value="">Loading...</option>
+              ) : (
+                <option value="">Select a category</option>
+              )}
+              {categories?.map((category) => (
                 <option key={category._id} value={category.name}>
                   {category.name}
                 </option>

@@ -1,24 +1,13 @@
 "use client";
-import { CreateProductDto } from "@/interfaces/products.intefaces";
 import React from "react";
 import toast from "react-hot-toast";
 import { toastDelete } from "./ToastDelete";
+import { ModalProps } from "@/interfaces/products.interfaces";
+import { useProductsStore } from "@/store/useProductsStore";
 
-interface ModalProps {
-  product: CreateProductDto;
-  isOpen: boolean;
-  onClose: () => void;
-  products: CreateProductDto[];
-  setProducts: React.Dispatch<React.SetStateAction<CreateProductDto[]>>;
-}
-
-export const DetailModal = ({
-  product,
-  isOpen,
-  onClose,
-  products,
-  setProducts,
-}: ModalProps) => {
+export const DetailModal = ({ product, isOpen, onClose }: ModalProps) => {
+  const products = useProductsStore((state) => state.products);
+  const setProducts = useProductsStore((state) => state.setProducts);
   const handleOnClose = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const target = e.target as HTMLElement;
     if (target.id === "modal") {
@@ -30,14 +19,11 @@ export const DetailModal = ({
 
   const handleDeleteProduct = async () => {
     try {
-      toastDelete({ product, onClose, products, setProducts });
+      toastDelete({ product, onClose, products, setProducts }); // Llama a la función toastDelete para mostrar el modal de confirmación
     } catch (error: any) {
-      if (error.response.status === 404) {
-        toast.error("Product not found");
-      }
+      console.log(error)
       toast.error("Something went wrong");
     }
-    onClose();
   };
 
   return (

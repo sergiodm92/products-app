@@ -1,19 +1,18 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createCategoryService } from "@/services/categories.services";
+import { createCategoryService } from "@services/categories.services";
 import {
   ModalNewCategoryProps,
   CategoryFormInput,
-} from "@/interfaces/products.intefaces";
-import { createCategoryValidationSchema } from "@/validations/categories.validations";
+} from "@interfaces/products.interfaces";
+import { createCategoryValidationSchema } from "@validations/categories.validations";
 import toast from "react-hot-toast";
+import { useCategoriesStore } from "@store/useCategoriesStore";
 
 export const NewCategoryModal = ({
   isOpen,
   onClose,
-  categories,
-  setCategories,
 }: ModalNewCategoryProps) => {
   const {
     register: newCategory,
@@ -22,16 +21,16 @@ export const NewCategoryModal = ({
   } = useForm<CategoryFormInput>({
     resolver: yupResolver(createCategoryValidationSchema),
   });
+  const setCategories = useCategoriesStore((state) => state.setCategories);
+  const categories = useCategoriesStore((state) => state.categories);
 
   const onSubmit: SubmitHandler<CategoryFormInput> = async (data) => {
     try {
       const response = await createCategoryService(data);
+      if (response.status !== 201) return;
       setCategories([...categories, response.data]);
-
-      if (response.status === 201) {
-        toast.success("Category created successfully");
-        onClose();
-      }
+      toast.success("Category created successfully");
+      onClose();
     } catch (error: any) {
       if (error.response) {
         const statusCode = error.response.status;

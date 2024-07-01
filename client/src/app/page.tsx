@@ -1,6 +1,6 @@
-"use client";
+"use client"; // Usar el client-side de Next.js
 import { useEffect, useState } from "react";
-import { getProductsService } from "@/services/products.services";
+import { getProductsService } from "@services/products.services";
 import {
   Table,
   Spinner,
@@ -10,12 +10,13 @@ import {
   Pagination,
   HomeHeader,
 } from "@components/index";
+import { useProductsStore } from "@store/useProductsStore";
+import { Product } from "@interfaces/products.interfaces";
 
 const Home = () => {
-  const [products, setProducts] = useState<any[]>([]);
+  const products = useProductsStore((state) => state.products);
+  const setProducts = useProductsStore((state) => state.setProducts);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState("No products available");
-  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
   const [stockRange, setStockRange] = useState({ min: 0, max: 1000 });
@@ -23,6 +24,7 @@ const Home = () => {
   const [isStockFilterEnabled, setIsStockFilterEnabled] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  const [allProducts, setAllProducts] = useState<Product[]>([]); // Estado para almacenar los productos originales
 
   const columns = [
     { key: "name", name: "NAME" },
@@ -34,32 +36,33 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    const getProducts = async () => {
+    const fetchProducts = async () => {
       try {
-        const products = await getProductsService();
-        setProducts(products);
-        setFilteredProducts(products);
+        const response = await getProductsService();
+        setProducts(response); // Actualiza el estado global con los productos obtenidos
+        setAllProducts(response); // Guarda los productos originales al cargarlos
       } catch (error) {
-        setStatus("Connection error");
+        console.error("Error fetching products:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Asegura que setLoading se establezca en false al finalizar
       }
     };
-    getProducts();
-  }, []);
+
+    fetchProducts();
+  }, []); // Este efecto se ejecuta solo una vez al montar el componente
 
   useEffect(() => {
     const filterProducts = () => {
-      let filtered = products;
+      let filtered = [...allProducts]; // Utiliza los productos originales como base para filtrar
 
-      // Apply search query filter
+      // Aplicar filtro de búsqueda
       if (searchQuery) {
-        filtered = filtered.filter((product) =>
+        filtered = filtered.filter((product: Product) =>
           product.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
       }
 
-      // Apply price range filter if enabled
+      // Aplicar filtro de rango de precio si está habilitado
       if (isPriceFilterEnabled) {
         filtered = filtered.filter(
           (product) =>
@@ -67,7 +70,7 @@ const Home = () => {
         );
       }
 
-      // Apply stock range filter if enabled
+      // Aplicar filtro de rango de stock si está habilitado
       if (isStockFilterEnabled) {
         filtered = filtered.filter(
           (product) =>
@@ -75,21 +78,18 @@ const Home = () => {
         );
       }
 
-      setFilteredProducts(filtered);
-      setCurrentPage(1); // Reset to first page on filter change
-      if (filtered.length === 0) {
-        setStatus("No products found");
-      }
+      setProducts(filtered);
+      setCurrentPage(1); // Reiniciar a la primera página al cambiar los filtros
     };
 
     filterProducts();
   }, [
+    allProducts,
     searchQuery,
     priceRange,
     isPriceFilterEnabled,
     stockRange,
     isStockFilterEnabled,
-    products,
   ]);
 
   const handleSearch = (query: string) => {
@@ -104,15 +104,15 @@ const Home = () => {
     setStockRange({ min, max });
   };
 
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const currentPageData = filteredProducts.slice(
+  const totalPages = Math.ceil(products?.length / itemsPerPage);
+  const currentPageData = products?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   return (
-    <section className="flex-col container w-full justify-start text-center items-center">
-      <HomeHeader setProducts={setProducts} products={products} />
+    <section className="flex-col container w-full justify-start items-center">
+      <HomeHeader />
       <div className="flex flex-col md:flex-row mt-10 w-auto justify-start items-start md:justify-center gap-2 lg:gap-10">
         <Search onSearch={handleSearch} />
         <div className="flex items-center justify-center gap-2 h-auto">
@@ -120,7 +120,9 @@ const Home = () => {
             <input
               type="checkbox"
               checked={isPriceFilterEnabled}
-              onChange={() => setIsPriceFilterEnabled(!isPriceFilterEnabled)}
+              onChange={() =>
+                setIsPriceFilterEnabled(!isPriceFilterEnabled)
+              }
               className="mr-2"
             />
             Price
@@ -135,7 +137,9 @@ const Home = () => {
             <input
               type="checkbox"
               checked={isStockFilterEnabled}
-              onChange={() => setIsStockFilterEnabled(!isStockFilterEnabled)}
+              onChange={() =>
+                setIsStockFilterEnabled(!isStockFilterEnabled)
+              }
               className="mr-2"
             />
             Stock
@@ -150,11 +154,9 @@ const Home = () => {
         <div className="mt-20">
           <Spinner />
         </div>
-      ) : filteredProducts.length > 0 ? (
+      ) : products?.length > 0 ? (
         <>
-          <Table data={currentPageData} columns={columns} 
-          products={products} setProducts={setProducts}
-          />
+          <Table data={currentPageData} columns={columns} />
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}
@@ -163,7 +165,7 @@ const Home = () => {
         </>
       ) : (
         <div className="flex items-center justify-center text-center font-bold text-2xl text-white mt-20 p-10">
-          {status}
+          No products found
         </div>
       )}
     </section>

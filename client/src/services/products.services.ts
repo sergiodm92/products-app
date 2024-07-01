@@ -1,3 +1,4 @@
+import { CreateProductDto } from "@/interfaces/products.interfaces";
 import axiosInstance from "@lib/axiosInstance";
 
 export const getProductsService = async () => {
@@ -5,11 +6,11 @@ export const getProductsService = async () => {
     const response = await axiosInstance.get("/products");
     return response.data;
   } catch (error) {
-    throw error
+    throw error;
   }
 };
 
-export const createProductService = async (product: any) => {
+export const createProductService = async (product: CreateProductDto) => {
   try {
     const response = await axiosInstance.post("/products", product);
     return response;
@@ -26,4 +27,3 @@ export const deleteProductService = async (id: string) => {
     throw error;
   }
 };
-

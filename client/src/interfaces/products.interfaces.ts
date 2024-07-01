@@ -1,4 +1,14 @@
 export interface CreateProductDto {
+  name: string;
+  price: number;
+  description?: string;
+  category: string;
+  image?: string;
+  ratings?: number[];
+  stock: number;
+}
+
+export interface Product {
   _id: string;
   name: string;
   price: number;
@@ -11,16 +21,11 @@ export interface CreateProductDto {
 export interface ModalNewProductProps {
   isOpen: boolean;
   onClose: () => void;
-  categories: Category[];
-  setProducts: (products: any[]) => void;
-  products: CreateProductDto[];
 }
 
 export interface ModalNewCategoryProps {
   isOpen: boolean;
   onClose: () => void;
-  categories: Category[];
-  setCategories: (categories: Category[]) => void;
 }
 
 export interface CategoryFormInput {
@@ -41,4 +46,10 @@ export interface ProductFormInput {
   category: string;
   image?: string;
   stock: number;
+}
+
+export interface ModalProps {
+  product: CreateProductDto;
+  isOpen: boolean;
+  onClose: () => void;
 }

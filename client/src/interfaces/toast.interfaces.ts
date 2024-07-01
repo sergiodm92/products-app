@@ -1,8 +1,8 @@
-import { CreateProductDto } from "@/interfaces/products.intefaces";
+import { Product } from "./table.interfaces";
 
 export interface ToastDeleteProps {
-  product: CreateProductDto;
+  product: Product;
   onClose: () => void;
-  products: CreateProductDto[];
-  setProducts: React.Dispatch<React.SetStateAction<CreateProductDto[]>>;
+  products: Product[];
+  setProducts: (products: Product[]) => void;
 }

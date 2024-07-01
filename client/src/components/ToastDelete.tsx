@@ -1,5 +1,5 @@
-import { ToastDeleteProps } from "@/interfaces/toast.interfaces";
-import { deleteProductService } from "@/services/products.services";
+import { ToastDeleteProps } from "@interfaces/toast.interfaces";
+import { deleteProductService } from "@services/products.services";
 import toast from "react-hot-toast";
 
 export const toastDelete = ({
@@ -9,17 +9,19 @@ export const toastDelete = ({
   setProducts,
 }: ToastDeleteProps) => {
   const handleToastConfirm = async (t: any) => {
-    const newsProducts = products.filter(
-      (p) => p._id !== product._id
-    );
-    setProducts(newsProducts);
-    const response = await deleteProductService(product._id);
-    if (response.status === 200) {
-      toast.success("Product deleted successfully");
-      onClose();
+    try {
+      const response = await deleteProductService(product._id);
+      if (response.status === 200) {
+        toast.success("Product deleted successfully");
+        setProducts(products.filter((p) => p._id !== product._id));
+        onClose();
+      }
+    } catch (error: any) {
+      toast.error("Something went wrong");
     }
     toast.dismiss(t.id);
   };
+
   const handleToastCancel = (t: any) => {
     toast.dismiss(t.id);
   };
@@ -36,7 +38,7 @@ export const toastDelete = ({
             <img
               className="h-10 w-10 rounded-full"
               src="https://cdn-icons-png.freepik.com/512/5626/5626203.png"
-              alt=""
+              alt="Product Icon"
             />
           </div>
           <div className="ml-3 flex-1">
