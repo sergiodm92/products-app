@@ -44,11 +44,15 @@ yarn install  # o npm install
 ## Ejecución
 Para ejecutar el back-end, ejecuta el siguiente comando en la carpeta api:
 ```bash
-yarn start:dev
+yarn start
+# o
+npm start
 ```
 Para ejecutar el front-end, ejecuta el siguiente comando en la carpeta client:
 ```bash
 yarn run dev
+# o
+npm run dev
 ```
 
 ## Notas
