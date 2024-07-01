@@ -1,11 +1,7 @@
+import { stockFilterProps } from "@/interfaces/filters.intefaces";
 import React, { useState, useEffect } from "react";
 
-interface stockFilterProps {
-  onFilter: (min: number, max: number) => void;
-  disabled: boolean;
-}
-
-const StockFilter: React.FC<stockFilterProps> = ({ onFilter, disabled }) => {
+export const StockFilter: React.FC<stockFilterProps> = ({ onFilter, disabled }) => {
   const [minstock, setMinstock] = useState(0);
   const [maxstock, setMaxstock] = useState(1000);
 
@@ -64,4 +60,3 @@ const StockFilter: React.FC<stockFilterProps> = ({ onFilter, disabled }) => {
   );
 };
 
-export default StockFilter;

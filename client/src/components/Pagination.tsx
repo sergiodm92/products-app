@@ -7,7 +7,7 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPageChange }) => {
+export const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPageChange }) => {
   return (
     <div className="flex justify-center mb-10">
       {Array.from({ length: totalPages }, (_, i) => (
@@ -26,5 +26,3 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
     </div>
   );
 };
-
-export default Pagination;

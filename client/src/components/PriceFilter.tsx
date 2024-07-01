@@ -1,11 +1,7 @@
+import { PriceFilterProps } from "@/interfaces/filters.intefaces";
 import React, { useState, useEffect } from "react";
 
-interface PriceFilterProps {
-  onFilter: (min: number, max: number) => void;
-  disabled: boolean;
-}
-
-const PriceFilter: React.FC<PriceFilterProps> = ({ onFilter, disabled }) => {
+export const PriceFilter: React.FC<PriceFilterProps> = ({ onFilter, disabled }) => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
 
@@ -64,4 +60,3 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onFilter, disabled }) => {
   );
 };
 
-export default PriceFilter;

@@ -25,7 +25,7 @@ export interface ModalNewCategoryProps {
   setCategories: (categories: Category[]) => void;
 }
 
-export interface ProductFormInput {
+export interface CategoryFormInput {
   name: string;
   description: string;
 }
@@ -34,4 +34,14 @@ export interface Category {
   name: string;
   description: string;
   _id: string;
+}
+
+
+export interface ProductFormInput {
+  name: string;
+  price: number;
+  description: string;
+  category: string;
+  image?: string;
+  stock: number;
 }

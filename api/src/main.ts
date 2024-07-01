@@ -45,7 +45,7 @@ async function bootstrap() {
   await productsServiceInstance.initializeDefaultProducts();
 
   // Default port fallback if PORT environment variable is not set
-  const defaultPort = 8000;
+  const defaultPort = 7000;
 
   // Start NestJS application and listen on specified port or default port
   await app.listen(port || defaultPort);

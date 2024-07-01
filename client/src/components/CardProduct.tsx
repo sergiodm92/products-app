@@ -1,4 +1,4 @@
-const CardProduct = ({ product }: { product: any }) => {
+export const CardProduct = ({ product }: { product: any }) => {
   return (
     <div className="flex flex-col items-center justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-700 dark:bg-zinc-800">
       <div className="flex items-center justify-between">
@@ -30,4 +30,3 @@ const CardProduct = ({ product }: { product: any }) => {
   );
 };
 
-export default CardProduct;

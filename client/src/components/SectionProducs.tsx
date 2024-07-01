@@ -1,13 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getProductsService } from "@/services/products.services";
-import Table from "@components/Table";
-import Spinner from "./Spinner";
-import Search from "./Search";
-import PriceFilter from "./PriceFilter";
-import StockFilter from "./StockFilter";
-import Pagination from "./Pagination";
-import { Header } from "./HomeHeader";
+import {
+  Table,
+  Spinner,
+  Search,
+  PriceFilter,
+  StockFilter,
+  Pagination,
+  Header,
+} from "@components/index";
 
 const SectionProducts = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -110,7 +112,7 @@ const SectionProducts = () => {
 
   return (
     <section className="flex-col container w-full justify-start text-center items-center">
-      <Header setProducts={setProducts} products={products}/>
+      <Header setProducts={setProducts} products={products} />
       <div className="flex flex-col md:flex-row mt-10 w-auto justify-start items-start md:justify-center gap-2 lg:gap-10">
         <Search onSearch={handleSearch} />
         <div className="flex items-center justify-center gap-2 h-auto">
@@ -150,7 +152,7 @@ const SectionProducts = () => {
         </div>
       ) : filteredProducts.length > 0 ? (
         <>
-          <Table data={currentPageData} columns={columns}/>
+          <Table data={currentPageData} columns={columns} />
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}
@@ -167,5 +169,3 @@ const SectionProducts = () => {
 };
 
 export default SectionProducts;
-
-

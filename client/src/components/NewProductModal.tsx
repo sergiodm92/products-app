@@ -1,44 +1,24 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createProductService } from "@/services/products.services";
-import { ModalNewProductProps } from "@/interfaces/products";
+import { ModalNewProductProps, ProductFormInput } from "@/interfaces/products.intefaces";
+import { createProductValidationSchema } from "@/validations/products.validations";
 
-interface ProductFormInput {
-  name: string;
-  price: number;
-  description: string;
-  category: string;
-  image?: string;
-  stock: number;
-}
-
-const schema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  price: Yup.number()
-    .typeError("Price must be a number")
-    .positive("Price must be a positive number")
-    .required("Price is required"),
-  description: Yup.string().required("Description is required"),
-  category: Yup.string().required("Category is required"),
-  image: Yup.string().url("Must be a valid URL"),
-  stock: Yup.number()
-    .typeError("Stock must be a number")
-    .integer("Stock must be an integer")
-    .required("Stock is required"),
-});
-
-export default function NewProductModal({ isOpen, onClose, categories, setProducts, products }: ModalNewProductProps) {
+export const NewProductModal = ({
+  isOpen,
+  onClose,
+  categories,
+  setProducts,
+  products,
+}: ModalNewProductProps) => {
   const {
     register: newProduct,
     handleSubmit,
     formState: { errors },
   } = useForm<ProductFormInput>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(createProductValidationSchema),
   });
-
-
 
   const onSubmit: SubmitHandler<ProductFormInput> = async (data) => {
     try {
@@ -53,23 +33,17 @@ export default function NewProductModal({ isOpen, onClose, categories, setProduc
     onClose();
   };
 
-  const handleOnClose = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const target = e.target as HTMLElement;
-    if (target.id === "modal") {
-      onClose();
-    }
-  };
-
   if (!isOpen) return null;
 
   return (
     <div
-      id="modal"
       className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center z-50"
-      onClick={handleOnClose}
     >
       <div className="relative bg-secondaryDark p-4 rounded-xl w-96 text-white">
-        <button onClick={onClose} className="absolute top-2 right-4 text-white close border-[1px] rounded-full hover:bg-primary"/>
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-4 text-white close border-[1px] rounded-full hover:bg-primary"
+        />
 
         <h1 className="font-semibold text-center text-xl text-white">
           Add New Product
@@ -165,4 +139,4 @@ export default function NewProductModal({ isOpen, onClose, categories, setProduc
       </div>
     </div>
   );
-}
+};

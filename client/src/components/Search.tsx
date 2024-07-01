@@ -1,7 +1,7 @@
-import { SearchProps } from "@/interfaces/search";
+import { SearchProps } from "@/interfaces/search.interfaces";
 import React, { useState } from "react";
 
-const Search = ({ onSearch }: SearchProps) => {
+export const Search = ({ onSearch }: SearchProps) => {
   const [query, setQuery] = useState("");
 
   const handleInputChange = (e: any) => {
@@ -26,4 +26,3 @@ const Search = ({ onSearch }: SearchProps) => {
   );
 };
 
-export default Search;

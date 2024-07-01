@@ -1,4 +1,4 @@
-import { CreateProductDto } from "@/interfaces/products";
+import { CreateProductDto } from "@/interfaces/products.intefaces";
 import React from "react";
 
 interface ModalProps {
@@ -7,7 +7,7 @@ interface ModalProps {
   onClose: () => void;
 }
 
-export default function DetailModal({ data, isOpen, onClose }: ModalProps) {
+export const DetailModal = ({ data, isOpen, onClose }: ModalProps) => {
   const handleOnClose = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const target = e.target as HTMLElement;
     if (target.id === "modal") {

@@ -1,48 +1,42 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createCategoryService } from "@/services/categories.services";
-import { ModalNewCategoryProps, ProductFormInput } from "@/interfaces/products";
+import {
+  ModalNewCategoryProps,
+  CategoryFormInput,
+} from "@/interfaces/products.intefaces";
+import { createCategoryValidationSchema } from "@/validations/categories.validations";
 
-const schema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  description: Yup.string().required("Description is required"),
-});
-
-export default function NewCategoryModal({ isOpen, onClose, categories, setCategories }: ModalNewCategoryProps) {
+export const NewCategoryModal = ({
+  isOpen,
+  onClose,
+  categories,
+  setCategories,
+}: ModalNewCategoryProps) => {
   const {
     register: newCategory,
     handleSubmit,
     formState: { errors },
-  } = useForm<ProductFormInput>({
-    resolver: yupResolver(schema),
+  } = useForm<CategoryFormInput>({
+    resolver: yupResolver(createCategoryValidationSchema),
   });
 
-  const onSubmit: SubmitHandler<ProductFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<CategoryFormInput> = async (data) => {
     const response = await createCategoryService(data);
-    console.log(response);
     setCategories([...categories, response]);
     onClose();
-  };
-
-  const handleOnClose = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const target = e.target as HTMLElement;
-    if (target.id === "modal") {
-      onClose();
-    }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div
-      id="modal"
-      className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center z-50"
-      onClick={handleOnClose}
-    >
+    <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="relative bg-secondaryDark p-4 rounded-xl w-96 text-white">
-      <button onClick={onClose} className="absolute top-2 right-4 text-white close border-[1px] rounded-full hover:bg-primary"/>
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-4 text-white close border-[1px] rounded-full hover:bg-primary"
+        />
         <h1 className="font-semibold text-center text-xl text-white">
           Add New Category
         </h1>
@@ -82,4 +76,4 @@ export default function NewCategoryModal({ isOpen, onClose, categories, setCateg
       </div>
     </div>
   );
-}
+};
