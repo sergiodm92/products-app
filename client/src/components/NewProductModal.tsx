@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { createProductService } from "@/services/products.services";
 import { ModalNewProductProps, ProductFormInput } from "@/interfaces/products.intefaces";
 import { createProductValidationSchema } from "@/validations/products.validations";
+import toast from "react-hot-toast";
 
 export const NewProductModal = ({
   isOpen,
@@ -25,7 +26,7 @@ export const NewProductModal = ({
       const response = await createProductService(data);
       setProducts([...products, response.data]);
       if(response.status === 201) {
-        alert("Product created successfully");
+        toast.success("Product created successfully");
         onClose();
       }
    
@@ -33,16 +34,15 @@ export const NewProductModal = ({
       if (error.response) {
         const statusCode = error.response.status;
         if (statusCode === 409) {
-          alert("Product name already exists");
+          toast.error("Product name already exists");
         } else {
-          alert(`Error creating product: ${statusCode}`);
+          toast.error(`Error creating product: ${statusCode}`);
         }
       } else if (error.request) {
-        alert("No response received from the server");
+        toast.error("No response received from the server");
       } else {
-        alert("Error creating product");
+        toast.error("Error creating product");
       }
-  
   };
 }
 

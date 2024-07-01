@@ -7,6 +7,7 @@ import {
   CategoryFormInput,
 } from "@/interfaces/products.intefaces";
 import { createCategoryValidationSchema } from "@/validations/categories.validations";
+import toast from "react-hot-toast";
 
 export const NewCategoryModal = ({
   isOpen,
@@ -28,23 +29,22 @@ export const NewCategoryModal = ({
       setCategories([...categories, response.data]);
 
       if (response.status === 201) {
-        alert("Category created successfully");
+        toast.success("Category created successfully");
         onClose();
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response) {
         const statusCode = error.response.status;
         if (statusCode === 409) {
-          alert("Category name already exists");
+          toast.error("Category name already exists");
         } else {
-          alert(`Error creating category: ${statusCode}`);
+          toast.error(`Error creating category: ${statusCode}`);
         }
       } else if (error.request) {
-        alert("No response received from the server");
+        toast.error("No response received from the server");
       } else {
-        alert("Error creating category");
+        toast.error("Error creating category");
       }
-  
     }
   };
 
