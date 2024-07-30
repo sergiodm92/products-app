@@ -1,4 +1,4 @@
-# Scalboost - Products App
+# Products App
 
 Este proyecto incluye una aplicación full-stack con un front-end desarrollado en Next.js y un back-end desarrollado en NestJS.
 
